@@ -16,7 +16,7 @@ Outputs `OL -4508, invalid character "4" (expected a letter) at position 2`
 # Mask Symbols
 Symbol | Meaning
 --- | ---
-`\` | Escapes next character in output
+`\` | Escapes next character
 `0` | Requires a decimal digit at this position
 `9` | Permits a decimal digit at this position, but doesn't require it
 `L` | Requires an unicode letter at this position
