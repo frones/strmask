@@ -27,3 +27,6 @@ Symbol | Meaning
 `u` | Permits an unicode letter at this position, but doesn't require it, and maps it to upper case
 `W` | Requires an unicode letter at this position and maps it to lower case
 `w` | Permits an unicode letter at this position, but doesn't require it, and maps it to lower case
+
+# Acknowledgement
+I took some inspiration from https://github.com/the-darc/string-mask and Delphi's `FormatMaskText`, but my requirements were so simple that I didn't bother reading their codes and just wrote it from scratch. I don't know if the output is compatible with any of these (or any other mask formatting library out there). I guess not, but it's good enough for what I need.
