@@ -5,12 +5,12 @@ import (
 )
 
 func ExampleFormatMask() {
-    fmt.Printf("%s\n", strmask.FormatMask("00.000.000/0000-00", "12520501000188"))
-    // Output: 12.520.501/0001-88
+	fmt.Printf("%s\n", strmask.FormatMask("00.000.000/0000-00", "12520501000188"))
+	// Output: 12.520.501/0001-88
 }
 
 func ExampleValidateAndFormatMask() {
-    s, err := strmask.ValidateAndFormatMask("LLL-0000", "OL4508")
-    fmt.Printf("%s, %v\n", s, err)
-    // Output: OL -4508, invalid character "4" (expected a letter) at position 2
+	s, err := strmask.ValidateAndFormatMask("LLL-0000", "OL4508")
+	fmt.Printf("%s, %v\n", s, err)
+	// Output: OL -4508, invalid character "4" (expected a letter) at position 2
 }
