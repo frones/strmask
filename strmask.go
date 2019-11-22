@@ -1,3 +1,4 @@
+// Package strmask provides two simple functions to validate and format a string based on a mask.
 package strmask
 
 import (
@@ -6,6 +7,7 @@ import (
 	"unicode/utf8"
 )
 
+// ValidateAndFormatMask formats the string s based on the mask, reporting any invalid runes that doesn't fit the provided mask. Information about the mask symbols can be found at: https://github.com/frones/strmask
 func ValidateAndFormatMask(mask string, s string) (string, error) {
 	printNext := false
 	output := ""
@@ -108,6 +110,7 @@ func ValidateAndFormatMask(mask string, s string) (string, error) {
 	}
 }
 
+// FormatMask is a single-return value helper function to the ValidateAndFormatMask function. It just ignores any errors and outputs the formatted string returned.
 func FormatMask(mask string, s string) string {
 	output, _ := ValidateAndFormatMask(mask, s)
 	return output
