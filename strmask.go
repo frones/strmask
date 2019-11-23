@@ -69,7 +69,7 @@ func ValidateAndFormatMask(mask string, str string) (string, error) {
 			output += string(r)
 			printNext = false
 
-			if r2, w := utf8.DecodeRuneInString(str[strOffset:]); r2 == r {
+			if r2, w := utf8.DecodeRuneInString(str[strOffset:]); w > 0 && r2 == r {
 				strOffset += w
 			}
 
@@ -86,20 +86,22 @@ func ValidateAndFormatMask(mask string, str string) (string, error) {
 		case '=':
 			charCase = 'N'
 		case '9', '0':
-			r2, w := utf8.DecodeRuneInString(str[strOffset:])
-			if unicode.IsDigit(r2) {
+			if r2, w := utf8.DecodeRuneInString(str[strOffset:]); w > 0 && unicode.IsDigit(r2) {
 				output += string(r2)
 				strOffset += w
 			} else if r == '0' {
 				if lastErrOffset < strOffset {
-					err += fmt.Sprintf("invalid character \"%s\" (expected a digit) at position %d\n", string(r2), strOffset)
+					if w > 0 {
+						err += fmt.Sprintf("invalid character \"%s\" (expected a digit) at position %d\n", string(r2), strOffset)
+					} else {
+						err += fmt.Sprintf("expected a digit at position %d, but end of string found\n", strOffset)
+					}
 					lastErrOffset = strOffset
 				}
 				output += string(padChar)
 			}
 		case 'L', 'l':
-			r2, w := utf8.DecodeRuneInString(str[strOffset:])
-			if unicode.In(r2, asciiLetters) {
+			if r2, w := utf8.DecodeRuneInString(str[strOffset:]); w > 0 && unicode.In(r2, asciiLetters) {
 				if charCase == 'U' {
 					output += string(unicode.ToUpper(r2))
 				} else if charCase == 'L' {
@@ -110,14 +112,17 @@ func ValidateAndFormatMask(mask string, str string) (string, error) {
 				strOffset += w
 			} else if r == 'L' {
 				if lastErrOffset < strOffset {
-					err += fmt.Sprintf("invalid character \"%s\" (expected an ascii letter) at position %d\n", string(r2), strOffset)
+					if w > 0 {
+						err += fmt.Sprintf("invalid character \"%s\" (expected an ascii letter) at position %d\n", string(r2), strOffset)
+					} else {
+						err += fmt.Sprintf("expected an ascii letter at position %d, but end of string found\n", strOffset)
+					}
 					lastErrOffset = strOffset
 				}
 				output += string(padChar)
 			}
 		case 'A', 'a':
-			r2, w := utf8.DecodeRuneInString(str[strOffset:])
-			if unicode.In(r2, asciiLetters) || unicode.IsDigit(r2) {
+			if r2, w := utf8.DecodeRuneInString(str[strOffset:]); w > 0 && (unicode.In(r2, asciiLetters) || unicode.IsDigit(r2)) {
 				if charCase == 'U' {
 					output += string(unicode.ToUpper(r2))
 				} else if charCase == 'L' {
@@ -128,14 +133,17 @@ func ValidateAndFormatMask(mask string, str string) (string, error) {
 				strOffset += w
 			} else if r == 'A' {
 				if lastErrOffset < strOffset {
-					err += fmt.Sprintf("invalid character \"%s\" (expected an ascii letter or a digit) at position %d\n", string(r2), strOffset)
+					if w > 0 {
+						err += fmt.Sprintf("invalid character \"%s\" (expected an ascii letter or a digit) at position %d\n", string(r2), strOffset)
+					} else {
+						err += fmt.Sprintf("expected an ascii letter or a digit at position %d, but end of string found\n", strOffset)
+					}
 					lastErrOffset = strOffset
 				}
 				output += string(padChar)
 			}
 		case 'W', 'w':
-			r2, w := utf8.DecodeRuneInString(str[strOffset:])
-			if unicode.IsLetter(r2) {
+			if r2, w := utf8.DecodeRuneInString(str[strOffset:]); w > 0 && unicode.IsLetter(r2) {
 				if charCase == 'U' {
 					output += string(unicode.ToUpper(r2))
 				} else if charCase == 'L' {
@@ -146,25 +154,30 @@ func ValidateAndFormatMask(mask string, str string) (string, error) {
 				strOffset += w
 			} else if r == 'W' {
 				if lastErrOffset < strOffset {
-					err += fmt.Sprintf("invalid character \"%s\" (expected an unicode letter) at position %d\n", string(r2), strOffset)
+					if w > 0 {
+						err += fmt.Sprintf("invalid character \"%s\" (expected an unicode letter) at position %d\n", string(r2), strOffset)
+					} else {
+						err += fmt.Sprintf("expected an unicode letter at position %d, but end of string found\n", strOffset)
+					}
 					lastErrOffset = strOffset
 				}
 				output += string(padChar)
 			}
 		case 'C', 'c':
-			r2, w := utf8.DecodeRuneInString(str[strOffset:])
-			if charCase == 'U' {
-				output += string(unicode.ToUpper(r2))
-			} else if charCase == 'L' {
-				output += string(unicode.ToLower(r2))
-			} else {
-				output += string(r2)
+			if r2, w := utf8.DecodeRuneInString(str[strOffset:]); w > 0 {
+				if charCase == 'U' {
+					output += string(unicode.ToUpper(r2))
+				} else if charCase == 'L' {
+					output += string(unicode.ToLower(r2))
+				} else {
+					output += string(r2)
+				}
+				strOffset += w
 			}
-			strOffset += w
 		default:
 			output += string(r)
 			r2, w := utf8.DecodeRuneInString(str[strOffset:])
-			if r2 == r {
+			if w > 0 && r2 == r {
 				strOffset += w
 			}
 		}
