@@ -26,6 +26,7 @@ Outputs `OL -4508, invalid character "4" (expected a letter) at position 2`
 # Mask Symbols
 Symbol | Meaning
 --- | ---
+`;` | Used as a field separator for the mask
 `\` | Escapes next character
 `>` | Maps all letters that follow the symbol to upper case until the end of the mask or until a resetting `=` appears
 `<` | Maps all letters that follow the symbol to lower case until the end of the mask or until a resetting `=` appears
