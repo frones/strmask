@@ -15,6 +15,7 @@ var asciiLetters = &unicode.RangeTable{
 	},
 }
 
+// Reverses the provided string. Since this functions reverses the string rune by rune, it has problems with unicode combining characters.
 func reverse(s string) string {
 	runes := []rune(s)
 	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
@@ -23,6 +24,7 @@ func reverse(s string) string {
 	return string(runes)
 }
 
+// This functions just reverses any backslashes in the string with the rune preceding it. It's used to preserve escaped characters in reversed strings.
 func reverseBackslashs(s string) string {
 	runes := []rune(s)
 	for i := 0; i < len(runes); i++ {
@@ -33,7 +35,15 @@ func reverseBackslashs(s string) string {
 	return string(runes)
 }
 
-// ValidateAndFormatMask formats the string s based on the mask, reporting any invalid runes that doesn't fit the provided mask. Information about the mask symbols can be found at: https://github.com/frones/strmask
+// ValidateAndFormatMask formats the string s based on the mask, reporting any invalid runes that doesn't fit the provided mask.
+//
+// The mask argument consists of three fields separated by semicolons: the mask, a pad character and a Right-to-Left specifier. Only the first field is required.
+//
+// The pad character is the character added to the result string when a required character class cannot be matched in the source string (notice that the unmatched character in the source string is not skipped). If no pad character is specified, a space is used.
+//
+// If RTL processing is requested ('1'), the mask and the source string are reversed before processing, and the output is reversed afterwards. This causes extra characters in the source string to be at the left of the masked text and if the mask is bigger than the source string, the extra required characters in the mask are also padded to left.
+//
+// An information table about the mask symbols can be found at: https://github.com/frones/strmask
 func ValidateAndFormatMask(mask string, str string) (string, error) {
 	padChar := ' '
 	rtl := false

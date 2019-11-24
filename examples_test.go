@@ -5,7 +5,7 @@ import (
 )
 
 func ExampleFormatMask() {
-	fmt.Printf("%s\n", strmask.FormatMask("00.000.000/0000-00", "12520501000188"))
+	fmt.Printf("%s\n", strmask.FormatMask("00.000.000/0000-00;0;1", "12520501000188")) // Pad with zeroes, process RTL
 	// Output: 12.520.501/0001-88
 }
 
