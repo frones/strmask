@@ -39,7 +39,7 @@ func reverseBackslashs(s string) string {
 //
 // The mask argument consists of three fields separated by semicolons: the mask, a pad character and a Right-to-Left specifier. Only the first field is required.
 //
-// The pad character is the character added to the result string when a required character class cannot be matched in the source string (notice that the unmatched character in the source string is not skipped). If no pad character is specified, a space is used.
+// The pad character is the character added to the result string when a required character class cannot be matched in the source string (note that the unmatched character in the source string is not skipped). If no pad character is specified, a space is used.
 //
 // If RTL processing is requested ('1'), the mask and the source string are reversed before processing, and the output is reversed afterwards. This causes extra characters in the source string to be at the left of the masked text and if the mask is bigger than the source string, the extra required characters in the mask are also padded to left.
 //
